@@ -48,6 +48,7 @@ jobs:
         docker push mydockerhubusername/laba1marta:latest
 
 
+
     # Деплой и запуск контейнера (если необходимо)
     - name: Deploy to local Docker container (optional)
       run: |
