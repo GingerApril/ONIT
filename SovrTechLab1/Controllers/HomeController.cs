@@ -12,9 +12,10 @@ namespace Laba1Marta.Controllers
         }
         public IActionResult Index()
         {
-            var TableDB = _context.TableDB.ToList();
+            var TableDB = _context?.TableDB?.ToList() ?? new List<TableModel>();
             return View(TableDB);
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Add(string name, int number, DateTime BirthDate, DateTime AdmissionDate)
