@@ -1,0 +1,165 @@
+﻿@using Laba1Marta.Models
+@model IEnumerable<TableModel>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Студенты";
+}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="~lib/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        h2, h3 {
+            color: #6f42c1;
+        }
+
+        table {
+            margin-bottom: 20px;
+        }
+
+        .table {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background-color: #6f42c1; 
+            color: white;
+        }
+
+        .btn-primary:hover  {
+            background-color: #6f42d9;
+            color: white;
+        }
+        .thead-purple th {
+            background-color: #6f42c1;
+            color: white;
+        }
+
+
+        .form-group label {
+            color: #6f42c1; 
+
+        }
+
+        .filter-container {
+            width: 300px;
+            background-color: #ffffff;
+            padding: 10px 10px 15px 20px;
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Студенты</h2>
+
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table table-striped table-hover">
+                    <thead class="thead-purple">
+                        <tr>
+                            <th>ФИО</th>
+                            <th>Номер зачётки</th>
+                            <th>Дата рождения</th>
+                            <th>Дата поступления</th>
+                            <th>Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var student in Model)
+                        {
+                            <tr>
+                                <td>@student.Name</td>
+                                <td>@student.Number</td>
+                                <td>@student.BirthDate.ToShortDateString()</td>
+                                <td>@student.AdmissionDate.ToShortDateString()</td>
+                                <td>
+                                    <form method="post" asp-action="Delete" asp-route-id="@student.ID" class="dinline">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-primary">Удалить</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col-md-6 filter-container">
+                        <h3 class="mt-4">Добавить нового студента</h3>
+                        <form method="post" asp-controller="Home" asp-action="Add">
+                            @Html.AntiForgeryToken()
+                            <div class="form-group">
+                                <label>ФИО:</label>
+                                <input type="text" class="form-control" name="name" placeholder="Введите полное имя" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Номер зачётки:</label>
+                                <input type="number" class="form-control" name="number" placeholder="Введите номер зачётки" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Дата рождения:</label>
+                                <input type="date" class="form-control" name="BirthDate" required />
+                            </div>
+                            <div class="form-group">
+                                <label>Дата поступления:</label>
+                                <input type="date" class="form-control" name="AdmissionDate" required />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Добавить студента</button>
+                        </form>
+                    </div>
+
+                    <div class="col-md-6 filter-container">
+                        <h3 class="mt-4">Фильтрация студентов</h3>
+                        <form method="get" asp-controller="Home" asp-action="Filter">
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label>Возраст с:</label>
+                                    <input type="number" class="form-control" name="AgeFrom" min="0" placeholder="Минимальный возраст" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label>Возраст до:</label>
+                                    <input type="number" class="form-control" name="AgeTo" min="0" placeholder="Максимальный возраст" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label>Поступили до:</label>
+                                    <input type="date" class="form-control" name="AdmissionBefore" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-12">
+                                    <label>Поступили после:</label>
+                                    <input type="date" class="form-control" name="AdmissionAfter" />
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Фильтровать</button>
+                        </form>
+                    </div>
+                </div>
+
+        </div>
+
+        </div>
+    </div>
+    <script src="~lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
